@@ -1,6 +1,6 @@
 {
   "name": "canvas-sprite",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Responsive canvas sprite animation",
   "main": "./dist/main.js",
   "scripts": {
