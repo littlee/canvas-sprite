@@ -2,17 +2,17 @@
 
 Render sprite animation with canvas, (0 dependencies)
 
-## Why
+## Why?
 
-Because why not
+Because why not ?
 
-## Install
+## Install!
 
 ```
 npm i -S canvas-sprite
 ```
 
-## Usage
+## Usage!
 
 ```js
 import CanvasSprite from 'canvas-sprite';
@@ -23,7 +23,11 @@ CanvasSprite({
   imageUrl: './sprite.png',
   width: 460,
   height: 380,
-  numberOfFrames: 25,
-  ticksPerFrame: 3
+  frames: 25,
+  fps: 12
 });
 ```
+
+## Caveats
+
+For now, we support single row vertical sprite image only.

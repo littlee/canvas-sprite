@@ -8,17 +8,25 @@ function CanvasSprite(config) {
   var sprite = null;
   var spriteImg = new Image();
 
+  var now;
+  var then = Date.now();
+  var fpsInterval = 1000 / config.fps;
+  var delta;
+
   function spriteLoop() {
     window.requestAnimationFrame(spriteLoop);
-    sprite.update();
-    sprite.render();
+    now = Date.now();
+    delta = now - then;
+    if (delta > fpsInterval) {
+      then = now - (delta % fpsInterval);
+      sprite.update();
+      sprite.render();
+    }
   }
 
   function createSprite(options) {
     var that = {};
     var frameIndex = 0;
-    var tickCount = 0;
-    var ticksPerFrame = options.ticksPerFrame || 0;
     var numberOfFrames = options.numberOfFrames || 1;
 
     that.context = options.context;
@@ -27,15 +35,10 @@ function CanvasSprite(config) {
     that.image = options.image;
 
     that.update = function() {
-      tickCount += 1;
-
-      if (tickCount > ticksPerFrame) {
-        tickCount = 0;
-        if (frameIndex < numberOfFrames - 1) {
-          frameIndex += 1;
-        } else {
-          frameIndex = 0;
-        }
+      if (frameIndex < numberOfFrames - 1) {
+        frameIndex += 1;
+      } else {
+        frameIndex = 0;
       }
     };
 
@@ -57,16 +60,21 @@ function CanvasSprite(config) {
     return that;
   }
 
+  console.log(config);
+
   sprite = createSprite({
     context: canvas.getContext('2d'),
-    width: config.width * config.numberOfFrames,
+    width: config.width * config.frames,
     height: config.height,
     image: spriteImg,
-    numberOfFrames: config.numberOfFrames,
-    ticksPerFrame: config.ticksPerFrame
+    numberOfFrames: config.frames,
   });
 
-  spriteImg.addEventListener('load', spriteLoop);
+  spriteImg.addEventListener('load', function() {
+    sprite.update();
+    sprite.render();
+    spriteLoop();
+  });
   spriteImg.src = config.imageUrl;
 }
 
