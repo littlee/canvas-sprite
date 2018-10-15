@@ -1,7 +1,13 @@
 {
   "name": "canvas-sprite",
   "version": "1.0.1",
-  "description": "Responsive canvas sprite animation",
+  "description": "Render sprite animation with canvas, (0 dependencies)",
+  "keywords": [
+    "sprite",
+    "spritesheet",
+    "canvas",
+    "animation"
+  ],
   "main": "./dist/main.js",
   "scripts": {
     "start": "webpack --mode development --watch",
