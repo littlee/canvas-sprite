@@ -1,3 +1,4 @@
 .gitignore
 example
-webpack.config.js;
+webpack.config.js
+README.md
