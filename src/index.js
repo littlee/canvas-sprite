@@ -60,7 +60,7 @@ function CanvasSprite(config) {
     return that;
   }
 
-  console.log(config);
+  // console.log(config);
 
   sprite = createSprite({
     context: canvas.getContext('2d'),
