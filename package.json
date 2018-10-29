@@ -1,6 +1,6 @@
 {
   "name": "canvas-sprite",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Render sprite animation with canvas, (0 dependencies)",
   "keywords": [
     "sprite",
