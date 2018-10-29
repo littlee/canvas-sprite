@@ -22,7 +22,7 @@
   <canvas id="canvas"></canvas>
   <script src="../dist/main.js"></script>
   <script>
-    CanvasSprite({
+    var CS = CanvasSprite({
       canvas: document.getElementById('canvas'),
       imageUrl: './sprite.png',
       width: 460,
@@ -30,6 +30,11 @@
       frames: 25,
       fps: 12
     });
+
+    setTimeout(() => {
+      document.getElementById('canvas').remove();
+      CS.destroy();
+    }, 1000);
   </script>
 </body>
 

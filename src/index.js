@@ -1,4 +1,4 @@
-import './polyfill.js';
+// import './polyfill.js';
 
 function CanvasSprite(config) {
   var canvas = config.canvas;
@@ -13,8 +13,11 @@ function CanvasSprite(config) {
   var fpsInterval = 1000 / config.fps;
   var delta;
 
+  var reqId = null;
+
   function spriteLoop() {
-    window.requestAnimationFrame(spriteLoop);
+    console.log(canvas);
+    reqId = window.requestAnimationFrame(spriteLoop);
     now = Date.now();
     delta = now - then;
     if (delta > fpsInterval) {
@@ -76,6 +79,17 @@ function CanvasSprite(config) {
     spriteLoop();
   });
   spriteImg.src = config.imageUrl;
+
+  return {
+    destroy: function() {
+      canvas = null;
+      sprite = null;
+      spriteImg = null;
+      if (reqId) {
+        window.cancelAnimationFrame(reqId);
+      }
+    }
+  }
 }
 
 export default CanvasSprite;
