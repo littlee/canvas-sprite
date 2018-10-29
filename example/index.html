@@ -10,6 +10,7 @@
     body {
       margin: 0;
     }
+
     canvas {
       width: 50%;
       display: block;
@@ -20,6 +21,7 @@
 
 <body>
   <canvas id="canvas"></canvas>
+  <button id="btn">button</button>
   <script src="../dist/main.js"></script>
   <script>
     var CS = CanvasSprite({
@@ -31,10 +33,11 @@
       fps: 12
     });
 
-    setTimeout(() => {
+    document.getElementById('btn').addEventListener('click', () => {
       document.getElementById('canvas').remove();
       CS.destroy();
-    }, 1000);
+    });
+
   </script>
 </body>
 

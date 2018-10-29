@@ -2,6 +2,7 @@
 
 function CanvasSprite(config) {
   var canvas = config.canvas;
+  var canvasContext = canvas.getContext('2d');
   canvas.width = config.width;
   canvas.height = config.height;
 
@@ -63,30 +64,34 @@ function CanvasSprite(config) {
   }
 
   sprite = createSprite({
-    context: canvas.getContext('2d'),
+    context: canvasContext,
     width: config.width * config.frames,
     height: config.height,
     image: spriteImg,
-    numberOfFrames: config.frames,
+    numberOfFrames: config.frames
   });
 
   spriteImg.addEventListener('load', function() {
-    sprite.update();
-    sprite.render();
-    spriteLoop();
+    // sprite can be null if destroy happened before image load event
+    if (sprite) {
+      sprite.update();
+      sprite.render();
+      spriteLoop();
+    }
   });
   spriteImg.src = config.imageUrl;
 
   return {
     destroy: function() {
-      canvas = null;
-      sprite = null;
-      spriteImg = null;
       if (reqId) {
         window.cancelAnimationFrame(reqId);
       }
+      canvas = null;
+      canvasContext = null;
+      sprite = null;
+      spriteImg = null;
     }
-  }
+  };
 }
 
 export default CanvasSprite;

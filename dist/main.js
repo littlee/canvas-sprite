@@ -1,1 +1,112 @@
-!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.CanvasSprite=t():e.CanvasSprite=t()}(window,function(){return function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=0)}([function(e,t,n){"use strict";n.r(t),t.default=function(e){var t=e.canvas;t.width=e.width,t.height=e.height;var n,r,o=null,i=new Image,u=Date.now(),a=1e3/e.fps,f=null;function d(){f=window.requestAnimationFrame(d),n=Date.now(),(r=n-u)>a&&(u=n-r%a,o.update(),o.render())}return o=function(e){var t={},n=0,r=e.numberOfFrames||1;return t.context=e.context,t.width=e.width,t.height=e.height,t.image=e.image,t.update=function(){n<r-1?n+=1:n=0},t.render=function(){t.context.clearRect(0,0,t.width,t.height),t.context.drawImage(t.image,n*t.width/r,0,t.width/r,t.height,0,0,t.width/r,t.height)},t}({context:t.getContext("2d"),width:e.width*e.frames,height:e.height,image:i,numberOfFrames:e.frames}),i.addEventListener("load",function(){o.update(),o.render(),d()}),i.src=e.imageUrl,{destroy:function(){t=null,o=null,i=null,f&&window.cancelAnimationFrame(f)}}}}]).default});
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["CanvasSprite"] = factory();
+	else
+		root["CanvasSprite"] = factory();
+})(window, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/index.js");
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./src/index.js":
+/*!**********************!*\
+  !*** ./src/index.js ***!
+  \**********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n// import './polyfill.js';\n\nfunction CanvasSprite(config) {\n  var canvas = config.canvas;\n  var canvasContext = canvas.getContext('2d');\n  canvas.width = config.width;\n  canvas.height = config.height;\n\n  var sprite = null;\n  var spriteImg = new Image();\n\n  var now;\n  var then = Date.now();\n  var fpsInterval = 1000 / config.fps;\n  var delta;\n\n  var reqId = null;\n\n  function spriteLoop() {\n    reqId = window.requestAnimationFrame(spriteLoop);\n    now = Date.now();\n    delta = now - then;\n    if (delta > fpsInterval) {\n      then = now - (delta % fpsInterval);\n      sprite.update();\n      sprite.render();\n    }\n  }\n\n  function createSprite(options) {\n    var that = {};\n    var frameIndex = 0;\n    var numberOfFrames = options.numberOfFrames || 1;\n\n    that.context = options.context;\n    that.width = options.width;\n    that.height = options.height;\n    that.image = options.image;\n\n    that.update = function() {\n      if (frameIndex < numberOfFrames - 1) {\n        frameIndex += 1;\n      } else {\n        frameIndex = 0;\n      }\n    };\n\n    that.render = function() {\n      that.context.clearRect(0, 0, that.width, that.height);\n      that.context.drawImage(\n        that.image,\n        (frameIndex * that.width) / numberOfFrames,\n        0,\n        that.width / numberOfFrames,\n        that.height,\n        0,\n        0,\n        that.width / numberOfFrames,\n        that.height\n      );\n    };\n\n    return that;\n  }\n\n  sprite = createSprite({\n    context: canvasContext,\n    width: config.width * config.frames,\n    height: config.height,\n    image: spriteImg,\n    numberOfFrames: config.frames,\n  });\n\n  spriteImg.addEventListener('load', function() {\n    sprite.update();\n    sprite.render();\n    spriteLoop();\n  });\n  spriteImg.src = config.imageUrl;\n\n  return {\n    destroy: function() {\n      if (reqId) {\n        window.cancelAnimationFrame(reqId);\n      }\n      canvas = null;\n      canvasContext = null;\n      sprite = null;\n      spriteImg = null;\n    }\n  }\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (CanvasSprite);\n\n\n//# sourceURL=webpack://CanvasSprite/./src/index.js?");
+
+/***/ })
+
+/******/ })["default"];
+});
