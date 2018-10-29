@@ -16,7 +16,6 @@ function CanvasSprite(config) {
   var reqId = null;
 
   function spriteLoop() {
-    console.log(canvas);
     reqId = window.requestAnimationFrame(spriteLoop);
     now = Date.now();
     delta = now - then;
@@ -62,8 +61,6 @@ function CanvasSprite(config) {
 
     return that;
   }
-
-  // console.log(config);
 
   sprite = createSprite({
     context: canvas.getContext('2d'),
