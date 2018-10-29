@@ -18,7 +18,7 @@ npm i -S canvas-sprite
 import CanvasSprite from 'canvas-sprite';
 // or use <script> tag to include, and CanvasSprite will be exposed to global
 
-CanvasSprite({
+var CS = CanvasSprite({
   canvas: document.getElementById('canvas'),
   imageUrl: './sprite.png',
   width: 460,
@@ -26,6 +26,9 @@ CanvasSprite({
   frames: 25,
   fps: 12
 });
+
+// call destroy when the canvas element is removed from DOM
+CS.destroy();
 ```
 
 ## Caveats
