@@ -24,12 +24,31 @@ var CS = CanvasSprite({
   width: 460,
   height: 380,
   frames: 25,
-  fps: 12
+  fps: 12,
+  loop: true,
+  onLoop: function(count) {
+    console.log('have looped', count, 'times');
+  },
+  onEnd: function() {
+    console.log('end');
+  }
 });
 
 // call destroy when the canvas element is removed from DOM
 CS.destroy();
 ```
+
+options:
+
+- canvas (HTMLCanvasElement): the canvas we want to render the sprite, **required**
+- imageUrl (String): the sprite image url, **required**
+- width (Number): width per frame in px, **required**
+- height (Number): height per frame in px, **required**
+- frames (Number): the number of sprite frames, **required**
+- fps (Number): frames rendered per second, **required**
+- loop (Boolean): should sprite animation loop, default to `true`
+- onLoop (Function): callback function when every time animation loop, only called when options.loop is `true`, receives `count` as parameter
+- onEnd (Function): callback function when animation end, only called when options.loop is `false`
 
 ## Caveats
 

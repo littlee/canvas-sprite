@@ -1,96 +1,87 @@
 // import './polyfill.js';
 
-function CanvasSprite(config) {
-  var canvas = config.canvas;
-  var canvasContext = canvas.getContext('2d');
-  canvas.width = config.width;
-  canvas.height = config.height;
+function CanvasSprite({
+  canvas,
+  imageUrl,
+  width,
+  height,
+  frames,
+  fps,
+  loop = true,
+  onEnd,
+  onLoop
+}) {
+  let context = canvas.getContext('2d');
+  canvas.width = width;
+  canvas.height = height;
 
-  var sprite = null;
-  var spriteImg = new Image();
+  let reqId = null;
 
-  var now;
-  var then = Date.now();
-  var fpsInterval = 1000 / config.fps;
-  var delta;
+  let spriteImg = new Image();
+  spriteImg.onload = () => {
+    let now = 0;
+    let then = Date.now();
+    let fpsInterval = 1000 / fps;
+    let delta = 0;
 
-  var reqId = null;
+    let frameIndex = 0;
+    let spriteWidth = width * frames;
+    let spriteHeight = height;
 
-  function spriteLoop() {
-    reqId = window.requestAnimationFrame(spriteLoop);
-    now = Date.now();
-    delta = now - then;
-    if (delta > fpsInterval) {
-      then = now - (delta % fpsInterval);
-      sprite.update();
-      sprite.render();
-    }
-  }
+    let loopCount = 0;
 
-  function createSprite(options) {
-    var that = {};
-    var frameIndex = 0;
-    var numberOfFrames = options.numberOfFrames || 1;
-
-    that.context = options.context;
-    that.width = options.width;
-    that.height = options.height;
-    that.image = options.image;
-
-    that.update = function() {
-      if (frameIndex < numberOfFrames - 1) {
+    function renderFrame() {
+      if (frameIndex < frames - 1) {
         frameIndex += 1;
       } else {
-        frameIndex = 0;
+        if (loop) {
+          frameIndex = 0;
+          loopCount++;
+          onLoop && onLoop(loopCount);
+        } else {
+          window.cancelAnimationFrame(reqId);
+          onEnd && onEnd();
+        }
       }
-    };
-
-    that.render = function() {
-      that.context.clearRect(0, 0, that.width, that.height);
-      that.context.drawImage(
-        that.image,
-        (frameIndex * that.width) / numberOfFrames,
+      context.clearRect(0, 0, spriteWidth, height);
+      context.drawImage(
+        spriteImg,
+        (frameIndex * spriteWidth) / frames,
         0,
-        that.width / numberOfFrames,
-        that.height,
+        spriteWidth / frames,
+        spriteHeight,
         0,
         0,
-        that.width / numberOfFrames,
-        that.height
+        spriteWidth / frames,
+        spriteHeight
       );
-    };
-
-    return that;
-  }
-
-  sprite = createSprite({
-    context: canvasContext,
-    width: config.width * config.frames,
-    height: config.height,
-    image: spriteImg,
-    numberOfFrames: config.frames
-  });
-
-  spriteImg.addEventListener('load', function() {
-    // sprite can be null if destroy happened before image load event
-    if (sprite) {
-      sprite.update();
-      sprite.render();
-      spriteLoop();
     }
-  });
-  spriteImg.src = config.imageUrl;
 
-  return {
-    destroy: function() {
-      if (reqId) {
-        window.cancelAnimationFrame(reqId);
+    function spriteLoop() {
+      reqId = window.requestAnimationFrame(spriteLoop);
+      now = Date.now();
+      delta = now - then;
+      if (delta > fpsInterval) {
+        then = now - (delta % fpsInterval);
+        renderFrame();
       }
-      canvas = null;
-      canvasContext = null;
-      sprite = null;
-      spriteImg = null;
     }
+    renderFrame();
+    spriteLoop();
+  };
+  spriteImg.src = imageUrl;
+
+  function destroy() {
+    if (reqId) {
+      window.cancelAnimationFrame(reqId);
+    }
+    reqId = null;
+    canvas = null;
+    context = null;
+    spriteImg = null;
+  }
+  return {
+    destroy
   };
 }
 
