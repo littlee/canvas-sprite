@@ -21,8 +21,6 @@ import CanvasSprite from 'canvas-sprite';
 var CS = CanvasSprite({
   canvas: document.getElementById('canvas'),
   imageUrl: './sprite.png',
-  width: 460,
-  height: 380,
   frames: 25,
   fps: 12,
   loop: true,
@@ -42,8 +40,6 @@ options:
 
 - canvas (HTMLCanvasElement): the canvas we want to render the sprite, **required**
 - imageUrl (String): the sprite image url, **required**
-- width (Number): width per frame in px, **required**
-- height (Number): height per frame in px, **required**
 - frames (Number): the number of sprite frames, **required**
 - fps (Number): frames rendered per second, **required**
 - loop (Boolean): should sprite animation loop, default to `true`

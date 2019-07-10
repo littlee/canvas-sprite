@@ -1,10 +1,6 @@
-// import './polyfill.js';
-
 function CanvasSprite({
   canvas,
   imageUrl,
-  width,
-  height,
   frames,
   fps,
   loop = true,
@@ -12,21 +8,24 @@ function CanvasSprite({
   onLoop
 }) {
   let context = canvas.getContext('2d');
-  canvas.width = width;
-  canvas.height = height;
 
   let reqId = null;
 
   let spriteImg = new Image();
   spriteImg.onload = () => {
+    let cWidth = spriteImg.width / frames;
+    let cHeight = spriteImg.height;
+    canvas.width = cWidth;
+    canvas.height = cHeight;
+
     let now = 0;
     let then = Date.now();
     let fpsInterval = 1000 / fps;
     let delta = 0;
 
     let frameIndex = 0;
-    let spriteWidth = width * frames;
-    let spriteHeight = height;
+    let spriteWidth = canvas.width * frames;
+    let spriteHeight = canvas.height;
 
     let loopCount = 0;
 
@@ -43,7 +42,7 @@ function CanvasSprite({
           onEnd && onEnd();
         }
       }
-      context.clearRect(0, 0, spriteWidth, height);
+      context.clearRect(0, 0, spriteWidth, cHeight);
       context.drawImage(
         spriteImg,
         (frameIndex * spriteWidth) / frames,
