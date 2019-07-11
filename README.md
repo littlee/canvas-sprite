@@ -2,6 +2,8 @@
 
 Render sprite animation with canvas, (0 dependencies)
 
+demo: https://codesandbox.io/s/affectionate-flower-s3opk
+
 ## Why?
 
 Because why not ?
@@ -12,13 +14,14 @@ Because why not ?
 npm i -S canvas-sprite
 ```
 
+or you can include `dist/main.js` with a `<script />` tag, it exposes `CanvasSprite` to global
+
 ## Usage!
 
 ```js
 import CanvasSprite from 'canvas-sprite';
-// or use <script> tag to include, and CanvasSprite will be exposed to global
 
-var CS = CanvasSprite({
+var cs = CanvasSprite({
   canvas: document.getElementById('canvas'),
   imageUrl: './sprite.png',
   frames: 25,
@@ -33,7 +36,7 @@ var CS = CanvasSprite({
 });
 
 // call destroy when the canvas element is removed from DOM
-CS.destroy();
+cs.destroy();
 ```
 
 options:
@@ -43,8 +46,12 @@ options:
 - frames (Number): the number of sprite frames, **required**
 - fps (Number): frames rendered per second, **required**
 - loop (Boolean): should sprite animation loop, default to `true`
-- onLoop (Function): callback function when every time animation loop, only called when options.loop is `true`, receives `count` as parameter
-- onEnd (Function): callback function when animation end, only called when options.loop is `false`
+- onLoop (Function): function invoked every time aniamtion loops if options.loop is `true`, takes `count` as parameter
+- onEnd (Function): function invoked when animation ends if options.loop is `false`
+
+## Migrate from v1.x
+
+Basically nothing, `width` and `height` are removed from options since they can be calculated, automagically.
 
 ## Caveats
 
