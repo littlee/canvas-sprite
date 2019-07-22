@@ -7,6 +7,10 @@ function CanvasSprite({
   onEnd,
   onLoop
 }) {
+  if (canvas.hasAttribute('data-cs-id')) {
+    throw new Error('the canvas has sprite with it, call .destroy() first');
+  }
+  canvas.setAttribute('data-cs-id', `cs-${Date.now()}`);
   let context = canvas.getContext('2d');
 
   let reqId = null;
@@ -75,6 +79,7 @@ function CanvasSprite({
       window.cancelAnimationFrame(reqId);
     }
     reqId = null;
+    canvas.removeAttribute('data-cs-id');
     canvas = null;
     context = null;
     spriteImg = null;

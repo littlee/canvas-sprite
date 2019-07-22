@@ -1,63 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <style>
-    body {
-      background-color: #333;
-    }
-    canvas {
-      display: block;
-    }
-
-    @keyframes spin {
-      from {
-        transform: rotate(0deg);
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      body {
+        background-color: #333;
       }
-      to {
-        transform: rotate(360deg);
+      canvas {
+        display: block;
       }
-    }
 
-    .perf {
-      width: 100px;
-      height: 100px;
-      background-color: aqua;
-      animation: spin 2s linear infinite both;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="perf"></div>
-  <canvas id="canvas"></canvas>
-  <button id="btn">button</button>
-  <script src="../dist/main.js"></script>
-  <script>
-    var CS = CanvasSprite({
-      canvas: document.getElementById('canvas'),
-      imageUrl: './sprite.png',
-      frames: 60,
-      fps: 12,
-      loop: true,
-      onEnd: function() {
-        console.log('end');
-      },
-      onLoop: function(count) {
-        console.log('on loop', count);
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
       }
-    });
 
-    document.getElementById('btn').addEventListener('click', () => {
-      document.getElementById('canvas').remove();
-      CS.destroy();
-    });
+      .perf {
+        width: 100px;
+        height: 100px;
+        background-color: aqua;
+        animation: spin 2s linear infinite both;
+      }
+    </style>
+  </head>
 
-  </script>
-</body>
+  <body>
+    <div class="perf"></div>
+    <canvas id="canvas"></canvas>
+    <button id="btn-create">create</button>
+    <!-- <button id="btn-play">play</button> -->
+    <!-- <button id="btn-stop">stop</button> -->
+    <button id="btn-destroy">destroy</button>
+    <script src="../dist/main.js"></script>
+    <script>
+      var CS = null;
 
+      function create() {
+        CS = CanvasSprite({
+          canvas: document.getElementById('canvas'),
+          imageUrl: './sprite.png',
+          frames: 60,
+          fps: 12,
+          loop: true,
+          onEnd: function() {
+            console.log('end');
+          },
+          onLoop: function(count) {
+            console.log('on loop', count);
+          }
+        });
+      }
+
+      document.getElementById('btn-create').addEventListener('click', () => {
+        create();
+      });
+      // document.getElementById('btn-play').addEventListener('click', () => {
+      //   CS.play();
+      // });
+      // document.getElementById('btn-stop').addEventListener('click', () => {
+      //   CS.stop();
+      // });
+      document.getElementById('btn-destroy').addEventListener('click', () => {
+        CS.destroy();
+      });
+    </script>
+  </body>
 </html>
