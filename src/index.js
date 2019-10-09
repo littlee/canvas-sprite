@@ -40,10 +40,14 @@ function CanvasSprite({
         if (loop) {
           frameIndex = 0;
           loopCount++;
-          onLoop && onLoop(loopCount);
+          setTimeout(() => {
+            onLoop && onLoop(loopCount);
+          }, 0);
         } else {
           window.cancelAnimationFrame(reqId);
-          onEnd && onEnd();
+          setTimeout(() => {
+            onEnd && onEnd();
+          }, 0);
         }
       }
       context.clearRect(0, 0, spriteWidth, cHeight);
@@ -78,6 +82,7 @@ function CanvasSprite({
     if (reqId) {
       window.cancelAnimationFrame(reqId);
     }
+    context.clearRect(0, 0, canvas.width, canvas.height);
     reqId = null;
     canvas.removeAttribute('data-cs-id');
     canvas = null;
