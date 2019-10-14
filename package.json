@@ -10,8 +10,10 @@
   ],
   "main": "./dist/main.js",
   "scripts": {
-    "start": "webpack --mode development --watch",
-    "build": "webpack --mode production"
+    "start": "webpack-dev-server",
+    "watch": "webpack --mode development --watch",
+    "build": "webpack --mode production",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -25,10 +27,15 @@
   "homepage": "https://github.com/littlee/canvas-sprite#readme",
   "devDependencies": {
     "@babel/core": "^7.6.3",
+    "@babel/plugin-transform-runtime": "^7.6.2",
     "@babel/preset-env": "^7.6.3",
     "babel-loader": "^8.0.6",
     "eslint": "^6.0.1",
     "webpack": "^4.20.2",
-    "webpack-cli": "^3.1.2"
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.8.2"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.6.3"
   }
 }
