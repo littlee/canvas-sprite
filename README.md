@@ -2,7 +2,7 @@
 
 Render sprite animation with canvas, (0 dependencies)
 
-<!-- demo: https://codesandbox.io/s/affectionate-flower-s3opk -->
+demo: https://codesandbox.io/s/still-hooks-16cj0
 
 ## Why?
 
