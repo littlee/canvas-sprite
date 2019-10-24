@@ -128,11 +128,14 @@ function CanvasSprite({
     spriteImgRef = spriteImg;
     let cWidth = spriteImg.width / frames;
     let cHeight = spriteImg.height;
-    canvas.width = cWidth;
-    canvas.height = cHeight;
-    then = Date.now();
-    renderFrame();
-    spriteLoop();
+    // loading image takes time, destroy may be called before
+    if (canvas) {
+      canvas.width = cWidth;
+      canvas.height = cHeight;
+      then = Date.now();
+      renderFrame();
+      spriteLoop();
+    }
   });
 
   function play() {
@@ -152,12 +155,12 @@ function CanvasSprite({
   function destroy() {
     animPaused = false;
     spriteImgRef = null;
-    if (reqId) {
-      window.cancelAnimationFrame(reqId);
-    }
+
+    reqId && window.cancelAnimationFrame(reqId);
+    context && context.clearRect(0, 0, canvas.width, canvas.height);
+    canvas && canvas.removeAttribute('data-cs-id');
+    
     reqId = null;
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    canvas.removeAttribute('data-cs-id');
     context = null;
     canvas = null;
   }
