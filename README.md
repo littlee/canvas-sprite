@@ -1,6 +1,6 @@
 # canvas-sprite
 
-Render sprite animation with canvas, (0 dependencies)
+Render sprite animation with canvas
 
 demo: https://codesandbox.io/s/still-hooks-16cj0
 

@@ -36,6 +36,7 @@
     "webpack-dev-server": "^3.8.2"
   },
   "dependencies": {
-    "@babel/runtime": "^7.6.3"
+    "@babel/runtime": "^7.6.3",
+    "url-parse": "^1.4.7"
   }
 }

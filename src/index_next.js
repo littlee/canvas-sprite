@@ -1,53 +1,36 @@
-import binCache from './binCache';
+// import binCache from './binCache';
+import isCrossOrigin from './isCrossOrigin';
 
-function fetchAsDataURL(url) {
-  return new Promise((resolve, reject) => {
-    let xhr = new XMLHttpRequest();
-    xhr.onload = () => {
-      let fr = new FileReader();
-      fr.onload = e => {
-        resolve({ url, result: e.target.result });
-      };
-      fr.onerror = () => {
-        reject(Error(`read ${url} error`));
-      };
-      fr.readAsDataURL(xhr.response);
-    };
-    xhr.onerror = () => {
-      reject(Error(`fetch ${url} error`));
-    };
-    xhr.responseType = 'blob';
-    xhr.open('GET', url);
-    xhr.send();
-  });
-}
-
-function tryFromCache(key) {
-  return new Promise(resolve => {
-    const value = binCache.get(key);
-    if (value) {
-      resolve(value);
-    } else {
-      return fetchAsDataURL(key).then(fetchRes => {
-        binCache.set(fetchRes.url, fetchRes.result);
-        resolve(fetchRes.result);
-      });
-    }
-  });
-}
+// function tryFromCache(key) {
+//   return new Promise(resolve => {
+//     const value = binCache.get(key);
+//     if (value) {
+//       resolve(value);
+//     } else {
+//       return fetchAsDataURL(key).then(fetchRes => {
+//         binCache.set(fetchRes.url, fetchRes.result);
+//         resolve(fetchRes.result);
+//       });
+//     }
+//   });
+// }
 
 function loadImage(url) {
   return new Promise((resolve, reject) => {
-    return tryFromCache(url).then(src => {
+    // xhr GET max size limit ?
+    // return tryFromCache(url).then(src => {
       const img = new Image();
+      if (isCrossOrigin(url)) {
+        img.crossOrigin = 'anonymous';
+      }
       img.onload = () => {
         resolve(img);
       };
       img.onerror = () => {
         reject(Error(`load ${url} error`));
       };
-      img.src = src;
-    });
+      img.src = url;
+    // });
   });
 }
 
@@ -117,8 +100,7 @@ function CanvasSprite({
           window.cancelAnimationFrame(reqId);
           onEnd && onEnd();
         }
-      }
-      else {
+      } else {
         frameIndex += 1;
       }
     }
@@ -159,7 +141,7 @@ function CanvasSprite({
     reqId && window.cancelAnimationFrame(reqId);
     context && context.clearRect(0, 0, canvas.width, canvas.height);
     canvas && canvas.removeAttribute('data-cs-id');
-    
+
     reqId = null;
     context = null;
     canvas = null;
