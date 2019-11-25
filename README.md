@@ -66,4 +66,5 @@ Basically nothing, `width` and `height` are removed from options since they can 
 
 ## Caveats
 
-For now, we support single row vertical sprite image only.
+- we support single row sprite image only for now
+- make sure the width & height of every frame is integer for performance boost
