@@ -19,17 +19,17 @@ function loadImage(url) {
   return new Promise((resolve, reject) => {
     // xhr GET max size limit ?
     // return tryFromCache(url).then(src => {
-      const img = new Image();
-      if (isCrossOrigin(url)) {
-        img.crossOrigin = 'anonymous';
-      }
-      img.onload = () => {
-        resolve(img);
-      };
-      img.onerror = () => {
-        reject(Error(`load ${url} error`));
-      };
-      img.src = url;
+    const img = new Image();
+    if (isCrossOrigin(url)) {
+      img.crossOrigin = 'anonymous';
+    }
+    img.onload = () => {
+      resolve(img);
+    };
+    img.onerror = () => {
+      reject(Error(`load ${url} error`));
+    };
+    img.src = url;
     // });
   });
 }
@@ -61,15 +61,30 @@ function CanvasSprite({
   let fpsInterval = 1000 / fps;
   let delta = 0;
   function spriteLoop() {
+    console.log('loop');
+    reqId = window.requestAnimationFrame(spriteLoop);
     if (!animPaused && spriteImgRef) {
       now = Date.now();
       delta = now - then;
       if (delta >= fpsInterval) {
         then = now - (delta % fpsInterval);
         renderFrame();
+        // last frame
+        if (frameIndex === frames - 1) {
+          if (loop) {
+            frameIndex = 0;
+            loopCount++;
+            onLoop && onLoop(loopCount);
+          } else {
+            animPaused = true;
+            window.cancelAnimationFrame(reqId);
+            onEnd && onEnd();
+          }
+        } else {
+          frameIndex += 1;
+        }
       }
     }
-    reqId = window.requestAnimationFrame(spriteLoop);
   }
 
   function renderFrame() {
@@ -89,20 +104,6 @@ function CanvasSprite({
         spriteWidth / frames,
         spriteHeight
       );
-      // last frame
-      if (frameIndex === frames - 1) {
-        if (loop) {
-          frameIndex = 0;
-          loopCount++;
-          onLoop && onLoop(loopCount);
-        } else {
-          animPaused = true;
-          window.cancelAnimationFrame(reqId);
-          onEnd && onEnd();
-        }
-      } else {
-        frameIndex += 1;
-      }
     }
   }
 

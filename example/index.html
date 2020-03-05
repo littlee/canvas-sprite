@@ -34,7 +34,7 @@
   <body>
     <div class="perf"></div>
     <canvas id="canvas"></canvas>
-    <button id="btn-create">create</button>
+    <button id="btn-create">create1</button>
     <button id="btn-play">play</button>
     <button id="btn-pause">pause</button>
     <button id="btn-stop">stop</button>
@@ -47,21 +47,21 @@
       function create() {
         CS = CanvasSprite({
           canvas: document.getElementById('canvas'),
-          imageUrl: './sprite.png',
+          imageUrl: './sprite_test.png',
           // imageUrl: 'https://plugins-test.oss-cn-shenzhen.aliyuncs.com/plugins-test/2714/tinyEmoji/1.0.3/scan_sprite1.d5cee6a.png',
-          imageUrl: 'https://cdn2.h5no1.com/apg-tiny-emoji-h5/static/img/sprite.cdcaa91.png',
-          frames: 60,
-          fps: 30,
-          loop: true,
+          // imageUrl: 'https://cdn2.h5no1.com/apg-tiny-emoji-h5/static/img/sprite.cdcaa91.png',
+          frames: 10,
+          fps: 5,
+          loop: false,
           onEnd: function() {
             console.log('end');
             // CS.destroy();
           },
           onLoop: function(count) {
-            console.log('on loop', count);
-            if (count === 3) {
-              CS.destroy();
-            }
+            // console.log('on loop', count);
+            // if (count === 3) {
+            //   CS.destroy();
+            // }
           }
         });
         // CS.pause();
