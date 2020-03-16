@@ -61,7 +61,7 @@ function CanvasSprite({
   let fpsInterval = 1000 / fps;
   let delta = 0;
   function spriteLoop() {
-    console.log('loop');
+    // console.log('loop');
     reqId = window.requestAnimationFrame(spriteLoop);
     if (!animPaused && spriteImgRef) {
       now = Date.now();
