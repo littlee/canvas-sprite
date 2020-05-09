@@ -28,10 +28,15 @@
         background-color: aqua;
         animation: spin 2s linear infinite both;
       }
+
+      #log {
+        color: white;
+      }
     </style>
   </head>
 
   <body>
+    <!-- <img id="img1" src="./home_duck1.png" alt="" style="max-width: 100%;"> -->
     <div class="perf"></div>
     <canvas id="canvas"></canvas>
     <button id="btn-create">create1</button>
@@ -40,24 +45,38 @@
     <button id="btn-stop">stop</button>
     <button id="btn-destroy">destroy</button>
     <button id="btn-destroy-rm">destroy & remove</button>
+    <button id="btn-change-image">change image</button>
+    <div id="log"></div>
     <script src="./main.js"></script>
     <script>
       var CS = null;
+      var cache = {};
+      function log(str) {
+        var $elem = document.createElement('p');
+        $elem.textContent = str;
+        document.getElementById('log').appendChild($elem);
+      }
+      // Promise.all([
+      //   CanvasSprite.$loadImage('./home_duck1.png'),
+      //   CanvasSprite.$loadImage('./home_duck2.png')
+      // ]).then(res => {
+      //   cache.duck1 = res[0];
+      //   cache.duck2 = res[1];
+      //   log('cache ok');
+      // });
 
-      function create() {
+      function create(imageUrl, frames) {
         CS = CanvasSprite({
           canvas: document.getElementById('canvas'),
-          imageUrl: './sprite_test.png',
-          // imageUrl: 'https://plugins-test.oss-cn-shenzhen.aliyuncs.com/plugins-test/2714/tinyEmoji/1.0.3/scan_sprite1.d5cee6a.png',
-          // imageUrl: 'https://cdn2.h5no1.com/apg-tiny-emoji-h5/static/img/sprite.cdcaa91.png',
-          frames: 10,
-          fps: 5,
-          loop: false,
-          onEnd: function() {
+          imageUrl: imageUrl,
+          frames: frames,
+          fps: 12,
+          loop: true,
+          onEnd: function () {
             console.log('end');
             // CS.destroy();
           },
-          onLoop: function(count) {
+          onLoop: function (count) {
             // console.log('on loop', count);
             // if (count === 3) {
             //   CS.destroy();
@@ -68,7 +87,7 @@
       }
 
       document.getElementById('btn-create').addEventListener('click', () => {
-        create();
+        create('./home_duck1_19.png', 19);
       });
 
       document.getElementById('btn-play').addEventListener('click', () => {
@@ -84,10 +103,19 @@
         CS.destroy();
         // document.getElementById('canvas').remove();
       });
-      document.getElementById('btn-destroy-rm').addEventListener('click', () => {
-        CS.destroy();
-        document.getElementById('canvas').remove();
-      });
+      document
+        .getElementById('btn-destroy-rm')
+        .addEventListener('click', () => {
+          CS.destroy();
+          document.getElementById('canvas').remove();
+        });
+      document
+        .getElementById('btn-change-image')
+        .addEventListener('click', () => {
+          CS.destroy();
+          // create(cache.duck2, 21);
+          create('./sprite_60.png', 60);
+        });
     </script>
   </body>
 </html>

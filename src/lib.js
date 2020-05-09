@@ -1,37 +1,24 @@
-// import binCache from './binCache';
 import isCrossOrigin from './isCrossOrigin';
 
-// function tryFromCache(key) {
-//   return new Promise(resolve => {
-//     const value = binCache.get(key);
-//     if (value) {
-//       resolve(value);
-//     } else {
-//       return fetchAsDataURL(key).then(fetchRes => {
-//         binCache.set(fetchRes.url, fetchRes.result);
-//         resolve(fetchRes.result);
-//       });
-//     }
-//   });
-// }
-
-function loadImage(url) {
+export function loadImage(url) {
   return new Promise((resolve, reject) => {
-    // xhr GET max size limit ?
-    // return tryFromCache(url).then(src => {
     const img = new Image();
     if (isCrossOrigin(url)) {
       img.crossOrigin = 'anonymous';
     }
     img.onload = () => {
+      img.setAttribute('data-loaded', 'true');
       resolve(img);
     };
     img.onerror = () => {
       reject(Error(`load ${url} error`));
     };
     img.src = url;
-    // });
   });
+}
+
+function isInteger(num) {
+  return typeof num === 'number' && parseInt(num) === num;
 }
 
 function CanvasSprite({
@@ -43,6 +30,22 @@ function CanvasSprite({
   onEnd,
   onLoop
 }) {
+  if (!canvas) {
+    throw new Error('canvas is required');
+  }
+
+  if (!imageUrl) {
+    throw new Error('imageUrl is required');
+  }
+
+  if (!isInteger(frames)) {
+    throw new Error('frames is required and should be integer');
+  }
+  
+  if (!isInteger(fps)) {
+    throw new Error('fps is required and should be integer');
+  }
+
   if (canvas.hasAttribute('data-cs-id')) {
     throw new Error('the canvas has sprite with it, call .destroy() first');
   }
@@ -107,7 +110,8 @@ function CanvasSprite({
     }
   }
 
-  loadImage(imageUrl).then(spriteImg => {
+  function startAnimate(spriteImg) {
+    console.log(spriteImg.width, spriteImg.height);
     spriteImgRef = spriteImg;
     let cWidth = spriteImg.width / frames;
     let cHeight = spriteImg.height;
@@ -119,7 +123,12 @@ function CanvasSprite({
       renderFrame();
       spriteLoop();
     }
-  });
+  }
+  if (imageUrl instanceof Image) {
+    startAnimate(imageUrl);
+  } else {
+    loadImage(imageUrl).then(startAnimate);
+  }
 
   function play() {
     animPaused = false;
@@ -154,5 +163,7 @@ function CanvasSprite({
     destroy
   };
 }
+
+CanvasSprite.$loadImage = loadImage;
 
 export default CanvasSprite;

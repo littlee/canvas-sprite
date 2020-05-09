@@ -1,4 +1,8 @@
 const path = require('path');
+// const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const defaultBabelPlugins = ['@babel/plugin-transform-runtime'];
+
 module.exports = (env, argv) => {
   const isDev = argv.mode === 'development';
   return {
@@ -7,9 +11,11 @@ module.exports = (env, argv) => {
       contentBase: path.resolve(__dirname, './example'),
       open: true,
       openPage: 'http://localhost:8080',
-      hot: true
+      hot: true,
     },
-    entry: './src/index_next.js',
+    plugins: [],
+    devtool: isDev ? 'inline-source-map' : undefined,
+    entry: './src/lib.js',
     module: {
       rules: [
         {
@@ -19,17 +25,19 @@ module.exports = (env, argv) => {
             loader: 'babel-loader',
             options: {
               presets: ['@babel/preset-env'],
-              plugins: ['@babel/plugin-transform-runtime']
-            }
-          }
-        }
-      ]
+              plugins: isDev
+                ? defaultBabelPlugins
+                : defaultBabelPlugins.concat(['transform-remove-console']),
+            },
+          },
+        },
+      ],
     },
     output: {
       path: isDev ? path.resolve(__dirname, './example') : undefined,
       library: 'CanvasSprite',
       libraryExport: 'default',
-      libraryTarget: 'umd'
-    }
+      libraryTarget: 'umd',
+    },
   };
 };
