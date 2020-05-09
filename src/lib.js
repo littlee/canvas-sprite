@@ -111,7 +111,7 @@ function CanvasSprite({
   }
 
   function startAnimate(spriteImg) {
-    console.log(spriteImg.width, spriteImg.height);
+    // console.log(spriteImg.width, spriteImg.height);
     spriteImgRef = spriteImg;
     let cWidth = spriteImg.width / frames;
     let cHeight = spriteImg.height;
@@ -164,6 +164,6 @@ function CanvasSprite({
   };
 }
 
-CanvasSprite.$loadImage = loadImage;
+CanvasSprite.loadImage = loadImage;
 
 export default CanvasSprite;

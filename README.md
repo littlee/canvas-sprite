@@ -103,13 +103,9 @@ instance methods:
 - stop(): stop animation, reset to first frame
 - destroy(): destroy animation, should be called when canvas element is removed(unmounted) from DOM, in case of memory leak
 
-named exports methods:
-
-- loadImage(url): load image from url, return a Promise which resolve the loaded image
-
 static methods:
 
-- CanvasSprite.\$loadImage: same as named exports `loadImage`
+- loadImage(url): load image from url, return a Promise which resolve the loaded image
 
 ## Migrate from v1.x
 

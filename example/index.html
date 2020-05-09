@@ -47,6 +47,7 @@
     <button id="btn-destroy-rm">destroy & remove</button>
     <button id="btn-change-image">change image</button>
     <div id="log"></div>
+    <script src="./url-parse.min.js"></script>
     <script src="./main.js"></script>
     <script>
       var CS = null;
@@ -56,14 +57,14 @@
         $elem.textContent = str;
         document.getElementById('log').appendChild($elem);
       }
-      // Promise.all([
-      //   CanvasSprite.$loadImage('./home_duck1.png'),
-      //   CanvasSprite.$loadImage('./home_duck2.png')
-      // ]).then(res => {
-      //   cache.duck1 = res[0];
-      //   cache.duck2 = res[1];
-      //   log('cache ok');
-      // });
+      Promise.all([
+        CanvasSprite.loadImage('./home_duck1_19.png'),
+        CanvasSprite.loadImage('./home_duck2_21.png')
+      ]).then(res => {
+        cache.duck1 = res[0];
+        cache.duck2 = res[1];
+        log('cache ok');
+      });
 
       function create(imageUrl, frames) {
         CS = CanvasSprite({
@@ -87,7 +88,8 @@
       }
 
       document.getElementById('btn-create').addEventListener('click', () => {
-        create('./home_duck1_19.png', 19);
+        // create('./home_duck1_19.png', 19);
+        create(cache.duck1, 19);
       });
 
       document.getElementById('btn-play').addEventListener('click', () => {
@@ -113,8 +115,8 @@
         .getElementById('btn-change-image')
         .addEventListener('click', () => {
           CS.destroy();
-          // create(cache.duck2, 21);
-          create('./sprite_60.png', 60);
+          create(cache.duck2, 21);
+          // create('./sprite_60.png', 60);
         });
     </script>
   </body>
