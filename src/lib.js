@@ -1,4 +1,5 @@
 import isCrossOrigin from './isCrossOrigin';
+import setFPS from './setFPS';
 
 export function loadImage(url) {
   return new Promise((resolve, reject) => {
@@ -7,11 +8,10 @@ export function loadImage(url) {
       img.crossOrigin = 'anonymous';
     }
     img.onload = () => {
-      img.setAttribute('data-loaded', 'true');
       resolve(img);
     };
     img.onerror = () => {
-      reject(Error(`load ${url} error`));
+      reject(Error(`${url} load failed`));
     };
     img.src = url;
   });
@@ -25,7 +25,7 @@ function CanvasSprite({
   canvas,
   imageUrl,
   frames,
-  fps,
+  fps = 12,
   loop = true,
   onEnd,
   onLoop
@@ -41,7 +41,7 @@ function CanvasSprite({
   if (!isInteger(frames)) {
     throw new Error('frames is required and should be integer');
   }
-  
+
   if (!isInteger(fps)) {
     throw new Error('fps is required and should be integer');
   }
@@ -50,54 +50,22 @@ function CanvasSprite({
     throw new Error('the canvas has sprite with it, call .destroy() first');
   }
   canvas.setAttribute('data-cs-id', `cs-${Date.now()}`);
-  let context = canvas.getContext('2d');
 
-  let reqId = null;
-  let animPaused = false;
+  let paused = false;
   let frameIndex = 0;
-  let spriteImgRef = null;
-
-  let loopCount = 0;
-
-  let now = 0;
-  let then = 0;
-  let fpsInterval = 1000 / fps;
-  let delta = 0;
-  function spriteLoop() {
-    // console.log('loop');
-    reqId = window.requestAnimationFrame(spriteLoop);
-    if (!animPaused && spriteImgRef) {
-      now = Date.now();
-      delta = now - then;
-      if (delta >= fpsInterval) {
-        then = now - (delta % fpsInterval);
-        renderFrame();
-        // last frame
-        if (frameIndex === frames - 1) {
-          if (loop) {
-            frameIndex = 0;
-            loopCount++;
-            onLoop && onLoop(loopCount);
-          } else {
-            animPaused = true;
-            window.cancelAnimationFrame(reqId);
-            onEnd && onEnd();
-          }
-        } else {
-          frameIndex += 1;
-        }
-      }
-    }
-  }
-
+  let fpsIns = null;
+  const context = canvas.getContext('2d');
+  let imgRef = null;
   function renderFrame() {
-    const spriteWidth = spriteImgRef.width;
-    const spriteHeight = spriteImgRef.height;
-
+    if (!imgRef) {
+      return;
+    }
+    const spriteWidth = imgRef.width;
+    const spriteHeight = imgRef.height;
     if (frameIndex < frames) {
-      context.clearRect(0, 0, spriteWidth, spriteHeight);
+      context.clearRect(0, 0, canvas.width, canvas.height);
       context.drawImage(
-        spriteImgRef,
+        imgRef,
         (frameIndex * spriteWidth) / frames,
         0,
         spriteWidth / frames,
@@ -108,53 +76,57 @@ function CanvasSprite({
         spriteHeight
       );
     }
-  }
-
-  function startAnimate(spriteImg) {
-    // console.log(spriteImg.width, spriteImg.height);
-    spriteImgRef = spriteImg;
-    let cWidth = spriteImg.width / frames;
-    let cHeight = spriteImg.height;
-    // loading image takes time, destroy may be called before
-    if (canvas) {
-      canvas.width = cWidth;
-      canvas.height = cHeight;
-      then = Date.now();
-      renderFrame();
-      spriteLoop();
+    frameIndex++;
+    if (frameIndex === frames) {
+      if (!loop) {
+        fpsIns.cancel();
+        onEnd && onEnd();
+      } else {
+        frameIndex = 0;
+        onLoop && onLoop();
+      }
     }
   }
+
+  function startAnim(img) {
+    canvas.width = img.width / frames;
+    canvas.height = img.height;
+    imgRef = img;
+    renderFrame();
+    fpsIns = setFPS(() => {
+      if (paused) {
+        return;
+      }
+      renderFrame();
+    }, fps);
+  }
+
   if (imageUrl instanceof Image) {
-    startAnimate(imageUrl);
+    startAnim(imageUrl);
   } else {
-    loadImage(imageUrl).then(startAnimate);
+    loadImage(imageUrl).then(img => {
+      startAnim(img);
+    });
   }
 
   function play() {
-    animPaused = false;
+    paused = false;
   }
 
   function pause() {
-    animPaused = true;
+    paused = true;
   }
 
   function stop() {
-    animPaused = true;
+    paused = true;
     frameIndex = 0;
     renderFrame();
   }
 
   function destroy() {
-    animPaused = false;
-    spriteImgRef = null;
-
-    reqId && window.cancelAnimationFrame(reqId);
+    fpsIns && fpsIns.cancel();
     context && context.clearRect(0, 0, canvas.width, canvas.height);
     canvas && canvas.removeAttribute('data-cs-id');
-
-    reqId = null;
-    context = null;
-    canvas = null;
   }
   return {
     play,

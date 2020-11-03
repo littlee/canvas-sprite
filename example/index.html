@@ -47,7 +47,6 @@
     <button id="btn-destroy-rm">destroy & remove</button>
     <button id="btn-change-image">change image</button>
     <div id="log"></div>
-    <script src="./url-parse.min.js"></script>
     <script src="./main.js"></script>
     <script>
       var CS = null;
@@ -78,6 +77,7 @@
             // CS.destroy();
           },
           onLoop: function (count) {
+            console.log('loop')
             // console.log('on loop', count);
             // if (count === 3) {
             //   CS.destroy();

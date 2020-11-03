@@ -16,14 +16,6 @@ module.exports = (env, argv) => {
     plugins: [],
     devtool: isDev ? 'inline-source-map' : undefined,
     entry: './src/lib.js',
-    externals: {
-      'url-parse': {
-        commonjs: 'url-parse',
-        commonjs2: 'url-parse',
-        amd: 'url-parse',
-        root: 'URLParse',
-      },
-    },
     module: {
       rules: [
         {
