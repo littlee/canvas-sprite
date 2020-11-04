@@ -2,7 +2,7 @@
 
 Render sprite animation with canvas
 
-demo: https://codesandbox.io/s/still-hooks-16cj0
+demo: https://codesandbox.io/s/red-dawn-m706x
 
 ## Why?
 
@@ -10,8 +10,8 @@ Because why not ?
 
 Even simple sprite sheet animation can be done with pure CSS, but:
 
-- the animation looks shaking on Android device when the element is using repsonsive unit in some case.
-- the animatoin looks flashing on iOS device when the sprite image's dimension is too large.
+- the animation looks "shaking" on Android device when the element is using repsonsive unit in some case.
+- the animation looks "flashing" on iOS device when the sprite image's dimension is too large.
 
 ## Install!
 
@@ -48,7 +48,7 @@ cs.destroy();
 
 ### Cache Management
 
-seamlessly change sprite sheet
+If an url string is passed to `options.imageUrl`, the library has to fetch the image from the URL before display the animation, and when the image is too large, it may take too long to fetching it, this will be the case when trying to switch sprite sheet on the same canvas element. So we can pass a loaded `Image` to `options.imageUrl` to get a seamlessly switching.
 
 ```js
 import CanvasSprite, { loadImage } from 'canvas-sprite';
@@ -93,8 +93,8 @@ options:
 - frames (Number): the number of sprite frames, **required**
 - fps (Number): frames rendered per second, **required**
 - loop (Boolean): should sprite animation loop, default to `true`
-- onLoop (Function): function invoked every time aniamtion loops if options.loop is `true`, takes `count` as parameter
 - onEnd (Function): function invoked when animation ends if options.loop is `false`
+- onLoop (Function): function invoked every time aniamtion loops if options.loop is `true`
 
 instance methods:
 
